@@ -16,5 +16,5 @@ router.delete('/site/:id', sessionAuth, SiteController.destroy);
 router.get('/site/:site_id/domains', sessionAuth, SiteController.getSiteDomains);
 router.post('/site/:site_id/basic-auth', sessionAuth, SiteController.addBasicAuth);
 router.delete('/site/:site_id/basic-auth', sessionAuth, SiteController.removeBasicAuth);
-router.get('/site/:id/tasks', sessionAuth, SiteController.getSiteTasks);
+router.get('/site/:site_id/tasks', sessionAuth, SiteController.getSiteTasks);
 module.exports = router;

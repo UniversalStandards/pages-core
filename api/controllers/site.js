@@ -281,9 +281,9 @@ module.exports = wrapHandlers({
 
     await authorizer.findOne(user, site);
 
-    const tasks = await BuildTask.siteScope(site.id).findAll();
-    const tasksJSON = buildTaskSerializer.serializeMany(tasks)
+    const tasks = await BuildTask.bySite(site.id).findAll();
+    const tasksJSON = buildTaskSerializer.serializeMany(tasks);
 
     return res.json(tasksJSON);
-  }
+  },
 });
