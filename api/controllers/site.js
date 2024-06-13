@@ -7,6 +7,7 @@ const UserActionCreator = require('../services/UserActionCreator');
 const EventCreator = require('../services/EventCreator');
 const siteSerializer = require('../serializers/site');
 const domainSerializer = require('../serializers/domain');
+const buildTaskSerializer = require('../serializers/build-task');
 const {
   Organization,
   Site,
@@ -14,6 +15,7 @@ const {
   Event,
   Domain,
   SiteBranchConfig,
+  BuildTask,
 } = require('../models');
 const siteErrors = require('../responses/siteErrors');
 const {
@@ -264,4 +266,24 @@ module.exports = wrapHandlers({
     const siteJSON = domainSerializer.serializeMany(domains);
     return res.json(siteJSON);
   },
+
+  async getSiteTasks(req, res) {
+    const {
+      user,
+      params: { site_id: siteId },
+    } = req;
+
+    const site = await Site.findByPk(siteId);
+
+    if (!site) {
+      return res.notFound();
+    }
+
+    await authorizer.findOne(user, site);
+
+    const tasks = await BuildTask.siteScope(site.id).findAll();
+    const tasksJSON = buildTaskSerializer.serializeMany(tasks)
+
+    return res.json(tasksJSON);
+  }
 });
