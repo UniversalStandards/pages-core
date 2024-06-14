@@ -1,5 +1,3 @@
-const { Op } = require('sequelize');
-
 const associate = ({ BuildTaskType, Site, SiteBuildTask }) => {
   SiteBuildTask.belongsTo(BuildTaskType, {
     foreignKey: 'buildTaskTypeId',
