@@ -10,32 +10,16 @@ const associate = ({ BuildTaskType, Site, SiteBuildTask }) => {
   });
 };
 
-async function createBuildTasks({ build }) {
+async function createBuildTask({ build }) {
   const {
     BuildTask,
   } = this.sequelize.models;
 
-  const siteBuildTasks = await this.findAll({
-    where: {
-      [Op.and]: [
-        {
-          [Op.or]: [
-            { branch: build.branch },
-            { branch: null },
-          ],
-        },
-        {
-          siteId: build.site,
-        },
-      ],
-    },
-  });
-
-  return Promise.all(siteBuildTasks.map(async siteBuildTask => BuildTask.create({
-    buildTaskTypeId: siteBuildTask.buildTaskTypeId,
+  return BuildTask.create({
+    buildTaskTypeId: this.buildTaskTypeId,
     buildId: build.id,
-    name: `build: ${build.id}, type: ${siteBuildTask.buildTaskTypeId}`,
-  })));
+    name: `build: ${build.id}, type: ${this.buildTaskTypeId}`,
+  });
 }
 
 module.exports = (sequelize, DataTypes) => {
@@ -58,6 +42,6 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   SiteBuildTask.associate = associate;
-  SiteBuildTask.createBuildTasks = createBuildTasks;
+  SiteBuildTask.prototype.createBuildTask = createBuildTask;
   return SiteBuildTask;
 };
