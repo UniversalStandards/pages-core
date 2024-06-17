@@ -8,7 +8,7 @@ const associate = ({ BuildTaskType, Site, SiteBuildTask }) => {
   });
 };
 
-async function createBuildTask({ build }) {
+async function createBuildTask(build) {
   const {
     BuildTask,
   } = this.sequelize.models;
